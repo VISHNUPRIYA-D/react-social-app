@@ -1,13 +1,374 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*{
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
 }
+body{
+  font-family: 'Open-Sans',sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  scroll-behavior: smooth;
+}
+/* #root{
+display:flex;
+flex-grow:1;
+justify-content:center;
+align-items:center;}
+.App{
+  width: 800px;
+}  this is for app to come center and not take a whole screen*/
+.header{
+  position: fixed;
+  padding: 5px;
+  top: 0px;
+  background-color: rgb(76, 76, 76);
+  color: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+body::-webkit-scrollbar{
+  display: none;
+}
+.content,.about-com{
+  overflow-y: auto;
+  position: relative;
+  top: 60px;
+}
+.contains{
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 10px;
+}
+.contains li{
+  list-style-type: none;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.contains .link{
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.show .contains {
+  visibility: visible;
+  display: block;
+  position: absolute;
+  right: -5px;
+  top: 45px;
+  width: 100px;
+  background-color:rgb(171, 171, 171);;
+  text-align: center;
+}
+.show .link{
+  color: black;
+  line-height: 30px;
+}
+.search-side{
+  display: flex;
+}
+#search{
+  padding: 2px 5px;
+  width: 400px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+}
+.submit-btn{
+  margin-left: -40px;
+  position: sticky;
+  background-color: skyblue;
+  width: 40px;
+  border: none;
+  border-radius: 0 10px 10px 0;
+}
+.logo{
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+  margin-left: 20px;
+}
+.post-items{
+  background-color:rgb(241, 241, 241);
+  position: relative;
+  width: 50%;
+  top:60px;
+  margin: 20px;
+  z-index: -1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  list-style-type:none ;
+  text-align: center;
+  place-self: center;
+  font-family: "Open-Sans",sans-serif;
+}
+.content::-webkit-scrollbar,
+.about-com::-webkit-scrollbar{
+  width: 7px;
+  height: max-content;
+}
+.content::-webkit-scrollbar-thumb,
+.about-com::-webkit-scrollbar-thumb{
+  background-color: #747474; /* Scrollbar color */
+  border-radius: 5px;
+}
+.content::-webkit-scrollbar-track,
+.about-com::-webkit-scrollbar-track {
+  background-color: #c9c9c9; /* Track color */
+}
+.post-items h1,p::first-letter,.single-post h2,p::first-letter{
+  text-transform: capitalize;
+}
+.post-items p{
+  margin: 5px 0 5px 0;
+}
+.link-post{
+  text-decoration: none;
+  color: black;
+}
+.title-create-new-post{
+  text-align: center;
+  margin: 20px;
+  font-family: calibri;
+}
+.newpost-form{
+  display: block;
+  position: relative;
+  top:120px;
+  background-color: rgb(195, 195, 195);
+  padding: 10px;
+  margin: 20px;
+  width: 40%;
+  max-height: fit-content;
+  place-self: center;
+  text-align: center;
+  border-radius: 10px;
+}
+.title-set,.body-set{
+  display: flex;
+}
+.step-back{
+  position: absolute;
+  left:8% ;
+  color: black;
+  font-size: 20px;
+  padding: 2px 3px 2px 3px;
+}
+.step-back:hover{
+  background-color: white;
+  border-radius: 50%;
+}
+#post-title-ip,#post-body-ip{
+  padding: 5px 10px;
+  width: 90%;
+  margin: 5px 20px;
+  margin-bottom: 30px;
+  border: none;
+  border-radius: 5px;
+}
+#post-title-ip{
+  height: 30px;
+}
+.submit-post{
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  width: 200px;
+  border: none;
+  border-radius:10px;
+  background-color: skyblue;
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+}
+.missing{
+  text-align: center;
+  margin-top: 5vh;
+  font-family:'Trebuchet MS';
+}
+.about-com{
+  position: relative;
+  top:60px;
+  display: flex;
+  width: 60%;
+  justify-content: center;
+  align-items: center;
+  margin-right: auto;
+  margin-left: auto;
+  scrollbar-width: 10px;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+}
+.about{
+  text-align: justify;
+  margin: 10px;
+  line-height: 30px;
+  font-family: calibri;
+}
+.question{
+  line-height: 50px;
+}
+.sub-head{
+  margin: 10px 0 10px 0;
+}
+.key-points li{
+  list-style-type: disc;
+  margin:0 0 10px 20px;
+}
+.single-post{
+  background-color: rgb(195, 195, 195);
+  margin: 20px;
+  border-radius:10px;
+  padding: 15px;
+  text-align: center;
+  line-height: 50px;
+}
+.delete-btn,.edit-btn{
+  padding: 5px 10px;
+  width: 100px;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  text-transform: capitalize;
+  cursor: pointer;
+  margin: 5px;
+}
+.delete-btn{
+  background-color: rgb(190, 0, 0);
+}
+.edit-btn{
+  background-color: skyblue;
+}
+.nav-icon{
+  font-size: 20px;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  visibility: hidden;
+  color: white;
+  z-index: 1000;
+  cursor: pointer;
+}
+@media screen and (max-width:1000px) {
+  .newpost-form{
+    width: 500px;
+    text-align: left;
+    padding-left: 15px;
+  }
+  .submit-post{
+   width: 95%;
+   margin-left: 5px;
+  }
+  .txt{
+    margin-left: 20px;
+    position: sticky;
+  }
+  .post-items{
+    width: 500px;
+  }
+}
+@media screen and (max-width:765px) {
+  #search{
+    width:250px;
+  }
+  .about-com{
+    width: 95%;
+  }
+  
+}
+@media screen and (max-width:580px) {
+  .header{
+    padding: 2px;
+    height: 50px;
+  }
+  .post-items{
+    width: 90%;
+  }
+  #search{
+    height: 30px;
+    border-radius: 5px;
+  }
+  .submit-btn{
+    border-radius: 0 5px 5px 0;
+  }
+  .logo{
+    margin-top: 5px;
+    margin-left: 10px;
+    width: 40px;
+  }
+  .contains .link{
+    font-size: 15px;
+  }
+  .contains,.contains li {
+    margin: 5px;
+  }
+  .submit-btn{
+    width: 30px;
+    margin-left: -20px;
+  }
+}
+@media screen and (max-width:530px) {
+  .newpost-form{
+    width: 400px;
+  }
+  #search{
+    width: 200px;
+  }
+}
+@media screen and (max-width:450px) {
+  .contains{
+    display: none;
+  }
+  .nav-icon{
+    visibility: visible;
+    position: fixed;
+  }
+  .about {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 5px;
+  }
+  .about li{
+    margin-left: 10px;
+  }
+  .newpost-form{
+    width: 300px;
+    padding: 10px;
+    height: fit-content;
+  }
+  #post-title-ip,#post-body-ip{
+    padding: 3px 5px;
+    width: 95%;
+    margin: 5px ;
+    margin-bottom: 10px;
+  }
+  .txt{
+    margin-left: 5px;
+    font-size: 15px;
+  }
+  .submit-post{
+    font-size: 15px;
+  }
+}
+@media screen and (max-width:350px) {
+  #search{
+    width:150px;
+    height: 25px;
+    font-size: 10px;
+    margin-left: -20px;
+  }
+  .newpost-form{
+    width: 250px;
+    padding: 10px;
+  }
+  .nav-icon{
+    margin-right: -10px;
+  }
+  .txt{
+    font-size: 12px;
+  }
 }
