@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "title": "happy birthday",
+      "datetime": "February 14 2025 11:29:56 AM",
+      "body": "this is my first cry"
+    },
+    {
+      "id": "2",
+      "title": "sunday",
+      "datetime": "February 15 2025 1:18:02 PM",
+      "body": "i will learn everything in weekend day.and wants to develop a greatfull and use full app to the client "
+    },
+    {
+      "id": "3",
+      "title": "diet",
+      "datetime": "February 15 2025 1:19:04 PM",
+      "body": "my body is crossed it's weight limit.so i'm going to maintain the diet for one month."
+    },
+    {
+      "id": "4",
+      "title": "project",
+      "datetime": "February 15 2025 1:20:46 PM",
+      "body": "for the upcoming hackethon event im goning to submit a powerfull project and give my full effort to create that project.please support everyone"
+    },
+    {
+      "id": "5",
+      "title": "college life memory",
+      "datetime": "February 15 2025 8:30:08 PM",
+      "body": "every students in our college is trying to do something to take a good job but the college management is not supporting for students.so every students worry about that."
+    },
+    {
+      "id": "6",
+      "title": "food",
+      "datetime": "February 15 2025 8:30:43 PM",
+      "body": "health is very important than anything"
+    }
+  ]
+}
