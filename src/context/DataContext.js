@@ -23,6 +23,7 @@ export const DataProvider = ({children}) => {
         const response = await axios.get(API_URL);
         if (response.data && Array.isArray(response.data.data)) {
         setPosts(response.data.data.reverse());
+        }
       } catch (error) {
         console.log("Error fetching data:", error.message);
       }
