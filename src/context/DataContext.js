@@ -15,7 +15,7 @@ export const DataProvider = ({children}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const API_URL = "https://raw.githubusercontent.com/VISHNUPRIYA-D/react-social-app/refs/heads/main/database/data.json";
+  const API_URL = "https://raw.githubusercontent.com/VISHNUPRIYA-D/react-social-app/main/database/data.json";
 
   useEffect(() => {
     const fetchItem = async () => {
