@@ -19,36 +19,53 @@ export const DataProvider = ({ children }) => {
   const API_KEY = "$2a$10$6oos3DkLhisvHnmLbcUBK.quQeYpPzB8m02UAnlbKRsH1OtvryLXy";
   const API_BASE = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-  // Fetch posts
+  // Fetch posts from JSONBin on mount
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`${API_BASE}/latest`, {
-          headers: { "X-Master-Key": API_KEY }
+          headers: { "X-Master-Key": API_KEY },
         });
+
         const data = response.data.record;
-        setPosts(data.reverse());
+        console.log("Fetched data:", data);
+
+        if (Array.isArray(data)) {
+          setPosts(data.reverse());
+        } else {
+          setPosts([]);
+          console.warn("Fetched data is not an array, resetting posts to empty array");
+        }
       } catch (error) {
         console.log("Error fetching data:", error.message);
+        setPosts([]);
       }
     };
     fetchPosts();
-  }, [API_BASE,API_KEY]);
+  }, []);
 
+  // Helper function to update the entire bin
   const updateBin = async (updatedPosts) => {
-    await axios.put(API_BASE, updatedPosts, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Master-Key": API_KEY
-      }
-    });
+    try {
+      await axios.put(API_BASE, updatedPosts, {
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": API_KEY,
+        },
+      });
+    } catch (error) {
+      console.error("Error updating JSONBin:", error.message);
+      throw error;
+    }
   };
 
+  // Clear search input
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearch("");
   };
 
+  // Delete a post by filtering and PUTting the updated list
   const handleDelete = async (id) => {
     try {
       const filteredPosts = posts.filter((post) => post.id !== id);
@@ -60,6 +77,7 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  // Add a new post and update JSONBin
   const handleNewpost = async (e) => {
     e.preventDefault();
     const id = posts.length
@@ -80,6 +98,7 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  // Edit an existing post and update JSONBin
   const handleEdit = async (id, e) => {
     e.preventDefault();
     const datetime = format(new Date(), "MMMM dd yyyy pp");
@@ -99,6 +118,7 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  // Toggle isOpen state
   const handleHam = () => {
     setIsOpen((prev) => !prev);
   };
@@ -121,7 +141,7 @@ export const DataProvider = ({ children }) => {
         setNewTitle,
         newBody,
         setNewBody,
-        handleNewpost
+        handleNewpost,
       }}
     >
       {children}
