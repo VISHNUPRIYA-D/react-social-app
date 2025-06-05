@@ -26,7 +26,7 @@ export const DataProvider = ({ children }) => {
       const response = await axios.get(`${API_BASE}/latest`, {
         headers: { "X-Master-Key": API_KEY },
       });
-  console.log("Raw fetch response.data.record:", response.data.record);
+  console.log("Full response:",response);
       const dataObj = response.data.record;
       if (dataObj && Array.isArray(dataObj.data)) {
         setPosts(dataObj.data.reverse());
