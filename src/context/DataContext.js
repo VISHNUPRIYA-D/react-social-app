@@ -33,7 +33,7 @@ export const DataProvider = ({ children }) => {
       }
     };
     fetchPosts();
-  }, []);
+  }, [API_BASE,API_KEY]);
 
   const updateBin = async (updatedPosts) => {
     await axios.put(API_BASE, updatedPosts, {
