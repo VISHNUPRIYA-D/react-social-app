@@ -29,7 +29,6 @@ export const DataProvider = ({ children }) => {
 
         const data = response.data.record;
         console.log("Fetched data:", data);
-
         if (Array.isArray(data)) {
           setPosts(data.reverse());
         } else {
