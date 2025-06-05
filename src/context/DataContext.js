@@ -20,36 +20,29 @@ export const DataProvider = ({ children }) => {
   const API_BASE = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
   // Fetch posts from JSONBin on mount
-  useEffect(() => {
+ useEffect(() => {
   const fetchPosts = async () => {
     try {
       const response = await axios.get(`${API_BASE}/latest`, {
-        headers: {
-          "X-Master-Key": API_KEY,
-        },
+        headers: { "X-Master-Key": API_KEY }
       });
 
-      const record = response?.data?.record;
+      const data = response.data.record?.data;
 
-      if (!record || !Array.isArray(record.data)) {
-        console.warn("Data format is incorrect. Expected { data: [...] }, got:", record);
+      if (Array.isArray(data)) {
+        setPosts(data.reverse());
+      } else {
+        console.warn("Fetched data is not an array:", data);
         setPosts([]);
-        return;
       }
 
-      setPosts(record.data.reverse()); // safe now
     } catch (error) {
-      console.error("Error fetching data:", error.message);
-      setPosts([]);
+      console.log("Error fetching data:", error.message);
     }
   };
 
   fetchPosts();
-}, []);
-
-
-
-
+}, [API_BASE, API_KEY]);
   // Helper function to update the entire bin
   const updateBin = async (updatedPosts) => {
   await axios.put(API_BASE, { data: updatedPosts }, {
