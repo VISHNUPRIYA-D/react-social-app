@@ -24,39 +24,29 @@ export const DataProvider = ({ children }) => {
   const fetchPosts = async () => {
     try {
       const response = await axios.get(`${API_BASE}/latest`, {
-        headers: { "X-Master-Key": API_KEY },
+        headers: {
+          "X-Master-Key": API_KEY,
+        },
       });
 
-      console.log("✅ Full response:", response);
-
-      // Check the full chain of expected properties
       const record = response?.data?.record;
 
-      if (!record) {
-        console.warn("⚠️ No 'record' found in response. Response was:", response.data);
+      if (!record || !Array.isArray(record.data)) {
+        console.warn("Data format is incorrect. Expected { data: [...] }, got:", record);
         setPosts([]);
         return;
       }
 
-      const data = record.data;
-
-      if (!Array.isArray(data)) {
-        console.warn("⚠️ 'record.data' is not an array. It is:", data);
-        setPosts([]);
-        return;
-      }
-
-      // At this point we are confident data is an array
-      setPosts(data.reverse());
-
+      setPosts(record.data.reverse()); // safe now
     } catch (error) {
-      console.log("❌ Error fetching data:", error.message);
+      console.error("Error fetching data:", error.message);
       setPosts([]);
     }
   };
 
   fetchPosts();
 }, []);
+
 
 
 
