@@ -26,21 +26,38 @@ export const DataProvider = ({ children }) => {
       const response = await axios.get(`${API_BASE}/latest`, {
         headers: { "X-Master-Key": API_KEY },
       });
-  console.log("Full response:",response);
-      const dataObj = response.data.record;
-      if (dataObj && Array.isArray(dataObj.data)) {
-        setPosts(dataObj.data.reverse());
-      } else {
+
+      console.log("✅ Full response:", response);
+
+      // Check the full chain of expected properties
+      const record = response?.data?.record;
+
+      if (!record) {
+        console.warn("⚠️ No 'record' found in response. Response was:", response.data);
         setPosts([]);
-        console.warn("Data format is incorrect or empty", dataObj);
+        return;
       }
+
+      const data = record.data;
+
+      if (!Array.isArray(data)) {
+        console.warn("⚠️ 'record.data' is not an array. It is:", data);
+        setPosts([]);
+        return;
+      }
+
+      // At this point we are confident data is an array
+      setPosts(data.reverse());
+
     } catch (error) {
-      console.log("Error fetching data:", error.message);
+      console.log("❌ Error fetching data:", error.message);
       setPosts([]);
     }
   };
+
   fetchPosts();
 }, []);
+
 
 
   // Helper function to update the entire bin
