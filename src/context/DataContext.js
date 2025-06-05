@@ -1,12 +1,12 @@
-import { createContext, useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom"
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
 
-const DataContext = createContext(null)
+const DataContext = createContext(null);
 
-export const DataProvider = ({children}) => {
-    const [posts, setPosts] = useState([]);
+export const DataProvider = ({ children }) => {
+  const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
@@ -15,21 +15,35 @@ export const DataProvider = ({children}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const API_URL = "https://raw.githubusercontent.com/VISHNUPRIYA-D/react-social-app/main/database/data.json";
+  const BIN_ID = "67b1ccf7acd3cb34a8e445f2";
+  const API_KEY = "$2a$10$6oos3DkLhisvHnmLbcUBK.quQeYpPzB8m02UAnlbKRsH1OtvryLXy";
+  const API_BASE = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
+  // Fetch posts
   useEffect(() => {
-    const fetchItem = async () => {
+    const fetchPosts = async () => {
       try {
-        const response = await axios.get(API_URL);
-        if (response.data && Array.isArray(response.data.data)) {
-        setPosts(response.data.data.reverse());
-        }
+        const response = await axios.get(`${API_BASE}/latest`, {
+          headers: { "X-Master-Key": API_KEY }
+        });
+        const data = response.data.record;
+        setPosts(data.reverse());
       } catch (error) {
         console.log("Error fetching data:", error.message);
       }
     };
-    fetchItem();
+    fetchPosts();
   }, []);
+
+  const updateBin = async (updatedPosts) => {
+    await axios.put(API_BASE, updatedPosts, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key": API_KEY
+      }
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearch("");
@@ -37,8 +51,9 @@ export const DataProvider = ({children}) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
-      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+      const filteredPosts = posts.filter((post) => post.id !== id);
+      await updateBin(filteredPosts);
+      setPosts(filteredPosts);
       navigate("/");
     } catch (error) {
       console.log("Error deleting post:", error.message);
@@ -47,20 +62,16 @@ export const DataProvider = ({children}) => {
 
   const handleNewpost = async (e) => {
     e.preventDefault();
-    // let numId = posts.length ? posts[posts.length - 1].id : 1;
-    // numId = Number(numId);
-    // const id = numId + 1;
     const id = posts.length
-    ? (Math.max(...posts.map((post) => Number(post.id))) + 1).toString()
-    : "1";
+      ? (Math.max(...posts.map((post) => Number(post.id))) + 1).toString()
+      : "1";
     const datetime = format(new Date(), "MMMM dd yyyy pp");
     const newPost = { id, title: newTitle, datetime, body: newBody };
 
     try {
-      await axios.post(API_URL, newPost, {
-        headers: { "Content-Type": "application/json" },
-      });
-      setPosts([...posts, newPost]);
+      const updatedPosts = [...posts, newPost];
+      await updateBin(updatedPosts);
+      setPosts(updatedPosts);
       setNewTitle("");
       setNewBody("");
       navigate("/");
@@ -68,17 +79,18 @@ export const DataProvider = ({children}) => {
       console.log("Error adding post:", error.message);
     }
   };
+
   const handleEdit = async (id, e) => {
     e.preventDefault();
     const datetime = format(new Date(), "MMMM dd yyyy pp");
-    const newPost = { id, title: editTitle, datetime, body: editBody };
+    const updatedPost = { id, title: editTitle, datetime, body: editBody };
+
     try {
-      const response = await axios.put(`${API_URL}/${id}`, newPost, {
-        headers: { "Content-type": "application/json" },
-      });
-      setPosts(
-        posts.map((post) => (post.id === id ? { ...response.data } : post))
+      const updatedPosts = posts.map((post) =>
+        post.id === id ? updatedPost : post
       );
+      await updateBin(updatedPosts);
+      setPosts(updatedPosts);
       setEditTitle("");
       setEditBody("");
       navigate("/");
@@ -86,19 +98,35 @@ export const DataProvider = ({children}) => {
       console.log("Error editing post:", error.message);
     }
   };
+
   const handleHam = () => {
     setIsOpen((prev) => !prev);
   };
-    return (
-        <DataContext.Provider value={{posts ,
-        isOpen ,
+
+  return (
+    <DataContext.Provider
+      value={{
+        posts,
+        isOpen,
         handleHam,
-        handleDelete,handleSubmit,search,
-        handleEdit, editTitle, setEditTitle , editBody ,setEditBody,
-        newTitle,setNewTitle,newBody,setNewBody,handleNewpost
-        }}>
-            {children}
-        </DataContext.Provider>
-    )
-}
-export default DataContext
+        handleDelete,
+        handleSubmit,
+        search,
+        handleEdit,
+        editTitle,
+        setEditTitle,
+        editBody,
+        setEditBody,
+        newTitle,
+        setNewTitle,
+        newBody,
+        setNewBody,
+        handleNewpost
+      }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
+};
+
+export default DataContext;
