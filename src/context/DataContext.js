@@ -21,42 +21,38 @@ export const DataProvider = ({ children }) => {
 
   // Fetch posts from JSONBin on mount
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(`${API_BASE}/latest`, {
-          headers: { "X-Master-Key": API_KEY },
-        });
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get(`${API_BASE}/latest`, {
+        headers: { "X-Master-Key": API_KEY },
+      });
 
-        const data = response.data.record;
-        console.log("Fetched data:", data);
-        if (Array.isArray(data)) {
-          setPosts(data.reverse());
-        } else {
-          setPosts([]);
-          console.warn("Fetched data is not an array, resetting posts to empty array");
-        }
-      } catch (error) {
-        console.log("Error fetching data:", error.message);
+      const dataObj = response.data.record;
+      if (dataObj && Array.isArray(dataObj.data)) {
+        setPosts(dataObj.data.reverse());
+      } else {
         setPosts([]);
+        console.warn("Data format is incorrect or empty", dataObj);
       }
-    };
-    fetchPosts();
-  }, []);
+    } catch (error) {
+      console.log("Error fetching data:", error.message);
+      setPosts([]);
+    }
+  };
+  fetchPosts();
+}, []);
+
 
   // Helper function to update the entire bin
   const updateBin = async (updatedPosts) => {
-    try {
-      await axios.put(API_BASE, updatedPosts, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": API_KEY,
-        },
-      });
-    } catch (error) {
-      console.error("Error updating JSONBin:", error.message);
-      throw error;
-    }
-  };
+  await axios.put(API_BASE, { data: updatedPosts }, {
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": API_KEY,
+    },
+  });
+};
+
 
   // Clear search input
   const handleSubmit = (e) => {
